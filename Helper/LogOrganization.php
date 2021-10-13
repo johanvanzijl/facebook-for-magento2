@@ -70,10 +70,14 @@ class LogOrganization
             }
 
             $countCrit = 0;
+//          Temporary fixes till I can deal with it properly          
+//          Fclose should be inside the loop            
+            fclose($fp);
         }
-        fclose($fp);
 
-        $amuLogs = self::tailCustom("var/log/facebook-business-extension.log", 100);
+//               
+//      The line below causes where doc root is set to pub https://devdocs.magento.com/guides/v2.4/install-gde/tutorials/change-docroot-to-pub.html
+        $amuLogs = self::tailCustom("../var/log/facebook-business-extension.log", 100);
         $amuLogsArr = explode("\n", $amuLogs);
         self::$criticalLines = array_merge(self::$criticalLines, $amuLogsArr);
 
