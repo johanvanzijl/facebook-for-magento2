@@ -20,11 +20,12 @@ class LogOrganization
         $countCrit = 0;
 
         foreach($arrayOfFiles as $value) {
-            if (!file_exists($value)) {
+            $filename = BP . "/" . $value;
+            if (!file_exists($filename)) {
                 continue;
             }
 
-            $fp = fopen($value, 'r');
+            $fp = fopen($filename, 'r');
             $pos = -2; // Skip final new line character (Set to -1 if not present)
             $currentLine = '';
 
@@ -69,15 +70,11 @@ class LogOrganization
                 $currentLine = '';
             }
 
-            $countCrit = 0;
-//          Temporary fixes till I can deal with it properly          
-//          Fclose should be inside the loop            
+            $countCrit = 0;          
             fclose($fp);
         }
 
-//               
-//      The line below causes where doc root is set to pub https://devdocs.magento.com/guides/v2.4/install-gde/tutorials/change-docroot-to-pub.html
-        $amuLogs = self::tailCustom("../var/log/facebook-business-extension.log", 100);
+        $amuLogs = self::tailCustom(BP . "/var/log/facebook-business-extension.log", 100);
         $amuLogsArr = explode("\n", $amuLogs);
         self::$criticalLines = array_merge(self::$criticalLines, $amuLogsArr);
 
